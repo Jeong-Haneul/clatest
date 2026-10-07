@@ -40,14 +40,15 @@ BBOX_MAX = (134.0, 42.0, 172.75)
 FLOOR_Z_MM = -3.1
 LIGHT_SCALE = 0.11
 WORLD_STRENGTH = 0.75
+BACKDROP_BOOST = 2.4
 EXPOSURE = -1.0
 
 # ---------------------------------------------------------------------------------------------- views
 # azim: degrees from the front (-Y) axis, positive toward +X.  elev: degrees above the horizon.
 # fit: (min, max) box in mm that must fit into the frame (None -> whole model).  shift: extra target offset (mm).
 VIEWS = {
-    "hero":          dict(azim=32, elev=21, focal=50, margin=1.10, fit=None, shift=(0, 0, 0)),
-    "front":         dict(azim=0, elev=1.5, focal=110, margin=1.06, fit=None, shift=(0, 0, 0)),
+    "hero":          dict(azim=32, elev=21, focal=50, margin=1.05, fit=None, shift=(0, 0, 0)),
+    "front":         dict(azim=0, elev=1.5, focal=110, margin=1.06, reflect=0.55, fit=None, shift=(0, 0, 0)),
     "iso":           dict(azim=-38, elev=28, focal=42, margin=1.10, fit=None, shift=(0, 0, 0)),
     "top":           dict(azim=0, elev=78, focal=70, margin=1.10, fit=None, shift=(0, 0, 0)),
     "side":          dict(azim=88, elev=6, focal=80, margin=1.10, fit=None, shift=(0, 0, 0)),
@@ -127,8 +128,9 @@ def _build_acrylic(mat, tint, tint_strength_color, rough, reflect_boost=1.0):
     # boost a bit: a real slab has two reflecting surfaces and the panel should read as glass head-on
     mul = nt.nodes.new("ShaderNodeMath")
     mul.operation = "MULTIPLY"
-    mul.inputs[1].default_value = 1.0 * reflect_boost
+    mul.inputs[1].default_value = 1.3 * reflect_boost
     mul.use_clamp = True
+    mul.name = "glass_boost"
     nt.links.new(sch.outputs["Value"], mul.inputs[0])
     mix = nt.nodes.new("ShaderNodeMixShader")
     nt.links.new(mul.outputs["Value"], mix.inputs["Fac"])
@@ -159,7 +161,7 @@ def _fixup_materials():
             _build_acrylic(mat, tint=(0.90, 0.97, 1.0, 1.0), tint_strength_color=(1.0, 1.0, 1.0, 1.0),
                            rough=0.02)
         elif b == "acrylic_smoke":
-            _build_acrylic(mat, tint=(0.30, 0.33, 0.38, 1.0), tint_strength_color=(0.9, 0.95, 1.0, 1.0),
+            _build_acrylic(mat, tint=(0.62, 0.66, 0.72, 1.0), tint_strength_color=(0.9, 0.95, 1.0, 1.0),
                            rough=0.04, reflect_boost=0.9)
         else:
             p = _principled(mat)
@@ -174,6 +176,17 @@ def _fixup_materials():
             if b == "led_lens":
                 continue
             _add_bevel(mat)
+
+
+def set_glass_reflect(scale):
+    """Scale the (boosted) Fresnel reflectivity of both acrylic materials (1.0 = default look)."""
+    for mat in bpy.data.materials:
+        if _base(mat) in ("acrylic_clear", "acrylic_smoke") and mat.use_nodes:
+            n = mat.node_tree.nodes.get("glass_boost")
+            if n is not None:
+                if "base_boost" not in n:
+                    n["base_boost"] = n.inputs[1].default_value
+                n.inputs[1].default_value = n["base_boost"] * scale
 
 
 def set_led(on):
@@ -225,7 +238,18 @@ def _setup_world(scene):
     e2 = cr.elements.new(0.75)
     e2.color = (0.85, 0.86, 0.88, 1)
     nt.links.new(ramp.outputs["Color"], bg.inputs["Color"])
-    bg.inputs["Strength"].default_value = WORLD_STRENGTH
+    # brighter backdrop for camera rays than for lighting (keeps the lighting soft, the picture airy)
+    lp = nt.nodes.new("ShaderNodeLightPath")
+    cm = nt.nodes.new("ShaderNodeMath")
+    cm.operation = "MULTIPLY_ADD"
+    cm.inputs[1].default_value = BACKDROP_BOOST - 1.0
+    cm.inputs[2].default_value = 1.0
+    nt.links.new(lp.outputs["Is Camera Ray"], cm.inputs[0])
+    sm = nt.nodes.new("ShaderNodeMath")
+    sm.operation = "MULTIPLY"
+    sm.inputs[1].default_value = WORLD_STRENGTH
+    nt.links.new(cm.outputs["Value"], sm.inputs[0])
+    nt.links.new(sm.outputs["Value"], bg.inputs["Strength"])
     nt.links.new(bg.outputs["Background"], out.inputs["Surface"])
 
 
@@ -252,7 +276,7 @@ def _setup_floor():
     nt.links.new(glossy.outputs["BSDF"], sheen.inputs[2])
     # distance fade into the world horizon colour
     emi = nt.nodes.new("ShaderNodeEmission")
-    emi.inputs["Color"].default_value = (0.90 * WORLD_STRENGTH, 0.86 * WORLD_STRENGTH, 0.80 * WORLD_STRENGTH, 1)
+    emi.inputs["Color"].default_value = (0.90 * WORLD_STRENGTH * BACKDROP_BOOST, 0.86 * WORLD_STRENGTH * BACKDROP_BOOST, 0.80 * WORLD_STRENGTH * BACKDROP_BOOST, 1)
     emi.inputs["Strength"].default_value = 1.0
     geo = nt.nodes.new("ShaderNodeNewGeometry")
     vl = nt.nodes.new("ShaderNodeVectorMath")
@@ -270,55 +294,6 @@ def _setup_floor():
     nt.links.new(fade.outputs["Shader"], out.inputs["Surface"])
     fl.data.materials.append(mat)
     return fl
-
-
-def _setup_reflection_card():
-    """Glossy-only emissive strip on the table in front of the box.  It is invisible to camera, diffuse light and
-    shadows, but the acrylic front panel mirrors it (when seen from above) as a soft bright band -> reads as glass."""
-    bpy.ops.mesh.primitive_plane_add(size=1.0, location=(-0.12, -0.30, FLOOR_Z_MM * MM + 0.0005))
-    ob = bpy.context.active_object
-    ob.name = "reflection_card"
-    ob.scale = (0.70, 0.05, 1.0)
-    mat = bpy.data.materials.new("reflection_card_mat")
-    mat.use_nodes = True
-    nt = mat.node_tree
-    nt.nodes.clear()
-    out = nt.nodes.new("ShaderNodeOutputMaterial")
-    emi = nt.nodes.new("ShaderNodeEmission")
-    emi.inputs["Color"].default_value = (1.0, 0.97, 0.92, 1)
-    tc = nt.nodes.new("ShaderNodeTexCoord")
-    sep = nt.nodes.new("ShaderNodeSeparateXYZ")
-    nt.links.new(tc.outputs["UV"], sep.inputs["Vector"])
-    # triangular profile across the strip width (v), squared -> soft falloff
-    sub = nt.nodes.new("ShaderNodeMath")
-    sub.operation = "SUBTRACT"
-    sub.inputs[1].default_value = 0.5
-    nt.links.new(sep.outputs["Y"], sub.inputs[0])
-    ab = nt.nodes.new("ShaderNodeMath")
-    ab.operation = "ABSOLUTE"
-    nt.links.new(sub.outputs["Value"], ab.inputs[0])
-    inv = nt.nodes.new("ShaderNodeMath")
-    inv.operation = "MULTIPLY_ADD"
-    inv.inputs[1].default_value = -2.0
-    inv.inputs[2].default_value = 1.0
-    nt.links.new(ab.outputs["Value"], inv.inputs[0])
-    sq = nt.nodes.new("ShaderNodeMath")
-    sq.operation = "MULTIPLY"
-    nt.links.new(inv.outputs["Value"], sq.inputs[0])
-    nt.links.new(inv.outputs["Value"], sq.inputs[1])
-    st = nt.nodes.new("ShaderNodeMath")
-    st.operation = "MULTIPLY"
-    st.inputs[1].default_value = 7.0
-    nt.links.new(sq.outputs["Value"], st.inputs[0])
-    nt.links.new(st.outputs["Value"], emi.inputs["Strength"])
-    nt.links.new(emi.outputs["Emission"], out.inputs["Surface"])
-    ob.data.materials.append(mat)
-    ob.visible_camera = False
-    ob.visible_diffuse = False
-    ob.visible_transmission = False
-    ob.visible_shadow = False
-    ob.visible_volume_scatter = False
-    return ob
 
 
 def _area_light(name, loc, target, size, power, color=(1, 1, 1), shape="RECTANGLE", size_y=None):
@@ -412,7 +387,6 @@ def build_scene(theta_deg=0.0, switch_on=True, view="hero", samples=64, res=(160
     _fixup_materials()
     _setup_world(scene)
     _setup_floor()
-    _setup_reflection_card()
     _setup_lights()
     cam_data = bpy.data.cameras.new("cam")
     cam = bpy.data.objects.new("cam", cam_data)
@@ -489,6 +463,7 @@ def setup_camera(view="hero", scene=None):
     cd.lens = cfg["focal"]
     cd.sensor_fit = "AUTO"
     cd.sensor_width = 36.0
+    set_glass_reflect(cfg.get("reflect", 1.0))
     cd.clip_start = 0.01
     cd.clip_end = 100.0
     fit = cfg["fit"]

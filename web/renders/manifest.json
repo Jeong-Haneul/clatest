@@ -1,0 +1,618 @@
+{
+  "files": {
+    "hero.jpg": {
+      "view": "hero",
+      "resolution": [
+        1600,
+        900
+      ],
+      "samples": 64,
+      "seconds": 125.0,
+      "pose": {
+        "theta_deg": 35,
+        "switch_on": true,
+        "carriage_x_mm": 26.776,
+        "conn_rod_rot_deg": -8.985,
+        "gear_G3_rot_deg": 35.0,
+        "gear_P1_rot_deg": -2800.0,
+        "figure_dx_mm": 0.098,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "front.jpg": {
+      "view": "front",
+      "resolution": [
+        1600,
+        900
+      ],
+      "samples": 64,
+      "seconds": 161.4,
+      "pose": {
+        "theta_deg": 35,
+        "switch_on": true,
+        "carriage_x_mm": 26.776,
+        "conn_rod_rot_deg": -8.985,
+        "gear_G3_rot_deg": 35.0,
+        "gear_P1_rot_deg": -2800.0,
+        "figure_dx_mm": 0.098,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "iso_off.jpg": {
+      "view": "iso",
+      "resolution": [
+        1280,
+        720
+      ],
+      "samples": 48,
+      "seconds": 55.3,
+      "pose": {
+        "theta_deg": 35,
+        "switch_on": false,
+        "carriage_x_mm": 26.776,
+        "conn_rod_rot_deg": -8.985,
+        "gear_G3_rot_deg": 35.0,
+        "gear_P1_rot_deg": -2800.0,
+        "figure_dx_mm": 0.098,
+        "switch_knob_x_mm": 97.5
+      }
+    },
+    "detail_drive.jpg": {
+      "view": "detail_drive",
+      "resolution": [
+        1280,
+        720
+      ],
+      "samples": 64,
+      "seconds": 199.7,
+      "pose": {
+        "theta_deg": 35,
+        "switch_on": true,
+        "carriage_x_mm": 26.776,
+        "conn_rod_rot_deg": -8.985,
+        "gear_G3_rot_deg": 35.0,
+        "gear_P1_rot_deg": -2800.0,
+        "figure_dx_mm": 0.098,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "detail_figure.jpg": {
+      "view": "detail_figure",
+      "resolution": [
+        1280,
+        720
+      ],
+      "samples": 64,
+      "seconds": 90.7,
+      "pose": {
+        "theta_deg": 35,
+        "switch_on": true,
+        "carriage_x_mm": 26.776,
+        "conn_rod_rot_deg": -8.985,
+        "gear_G3_rot_deg": 35.0,
+        "gear_P1_rot_deg": -2800.0,
+        "figure_dx_mm": 0.098,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f00.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.3,
+      "pose": {
+        "theta_deg": 0,
+        "switch_on": true,
+        "carriage_x_mm": 26.679,
+        "conn_rod_rot_deg": 0.0,
+        "gear_G3_rot_deg": 0.0,
+        "gear_P1_rot_deg": -0.0,
+        "figure_dx_mm": 0.0,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f01.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.4,
+      "pose": {
+        "theta_deg": 15,
+        "switch_on": true,
+        "carriage_x_mm": 28.279,
+        "conn_rod_rot_deg": -4.111,
+        "gear_G3_rot_deg": 15.0,
+        "gear_P1_rot_deg": -1200.0,
+        "figure_dx_mm": 1.6,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f02.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.5,
+      "pose": {
+        "theta_deg": 30,
+        "switch_on": true,
+        "carriage_x_mm": 27.521,
+        "conn_rod_rot_deg": -7.856,
+        "gear_G3_rot_deg": 30.0,
+        "gear_P1_rot_deg": -2400.0,
+        "figure_dx_mm": 0.843,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f03.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 38.1,
+      "pose": {
+        "theta_deg": 45,
+        "switch_on": true,
+        "carriage_x_mm": 24.622,
+        "conn_rod_rot_deg": -11.022,
+        "gear_G3_rot_deg": 45.0,
+        "gear_P1_rot_deg": -3600.0,
+        "figure_dx_mm": -2.057,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f04.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.9,
+      "pose": {
+        "theta_deg": 60,
+        "switch_on": true,
+        "carriage_x_mm": 19.974,
+        "conn_rod_rot_deg": -13.427,
+        "gear_G3_rot_deg": 60.0,
+        "gear_P1_rot_deg": -4800.0,
+        "figure_dx_mm": -6.705,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f05.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.4,
+      "pose": {
+        "theta_deg": 75,
+        "switch_on": true,
+        "carriage_x_mm": 14.076,
+        "conn_rod_rot_deg": -14.93,
+        "gear_G3_rot_deg": 75.0,
+        "gear_P1_rot_deg": -6000.0,
+        "figure_dx_mm": -12.603,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f06.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.4,
+      "pose": {
+        "theta_deg": 90,
+        "switch_on": true,
+        "carriage_x_mm": 7.457,
+        "conn_rod_rot_deg": -15.442,
+        "gear_G3_rot_deg": 90.0,
+        "gear_P1_rot_deg": -7200.0,
+        "figure_dx_mm": -19.221,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f07.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.7,
+      "pose": {
+        "theta_deg": 105,
+        "switch_on": true,
+        "carriage_x_mm": 0.617,
+        "conn_rod_rot_deg": -14.93,
+        "gear_G3_rot_deg": 105.0,
+        "gear_P1_rot_deg": -8400.0,
+        "figure_dx_mm": -26.062,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f08.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.8,
+      "pose": {
+        "theta_deg": 120,
+        "switch_on": true,
+        "carriage_x_mm": -6.026,
+        "conn_rod_rot_deg": -13.427,
+        "gear_G3_rot_deg": 120.0,
+        "gear_P1_rot_deg": -9600.0,
+        "figure_dx_mm": -32.705,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f09.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.3,
+      "pose": {
+        "theta_deg": 135,
+        "switch_on": true,
+        "carriage_x_mm": -12.147,
+        "conn_rod_rot_deg": -11.022,
+        "gear_G3_rot_deg": 135.0,
+        "gear_P1_rot_deg": -10800.0,
+        "figure_dx_mm": -38.826,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f10.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.0,
+      "pose": {
+        "theta_deg": 150,
+        "switch_on": true,
+        "carriage_x_mm": -17.512,
+        "conn_rod_rot_deg": -7.856,
+        "gear_G3_rot_deg": 150.0,
+        "gear_P1_rot_deg": -12000.0,
+        "figure_dx_mm": -44.191,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f11.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.5,
+      "pose": {
+        "theta_deg": 165,
+        "switch_on": true,
+        "carriage_x_mm": -21.949,
+        "conn_rod_rot_deg": -4.111,
+        "gear_G3_rot_deg": 165.0,
+        "gear_P1_rot_deg": -13200.0,
+        "figure_dx_mm": -48.628,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f12.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.2,
+      "pose": {
+        "theta_deg": 180,
+        "switch_on": true,
+        "carriage_x_mm": -25.321,
+        "conn_rod_rot_deg": 0.0,
+        "gear_G3_rot_deg": 180.0,
+        "gear_P1_rot_deg": -14400.0,
+        "figure_dx_mm": -52.0,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f13.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.3,
+      "pose": {
+        "theta_deg": 195,
+        "switch_on": true,
+        "carriage_x_mm": -27.495,
+        "conn_rod_rot_deg": 4.236,
+        "gear_G3_rot_deg": 195.0,
+        "gear_P1_rot_deg": -15600.0,
+        "figure_dx_mm": -54.174,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f14.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.3,
+      "pose": {
+        "theta_deg": 210,
+        "switch_on": true,
+        "carriage_x_mm": -28.319,
+        "conn_rod_rot_deg": 8.33,
+        "gear_G3_rot_deg": 210.0,
+        "gear_P1_rot_deg": -16800.0,
+        "figure_dx_mm": -54.998,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f15.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.8,
+      "pose": {
+        "theta_deg": 225,
+        "switch_on": true,
+        "carriage_x_mm": -27.617,
+        "conn_rod_rot_deg": 11.989,
+        "gear_G3_rot_deg": 225.0,
+        "gear_P1_rot_deg": -18000.0,
+        "figure_dx_mm": -54.296,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f16.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 30.1,
+      "pose": {
+        "theta_deg": 240,
+        "switch_on": true,
+        "carriage_x_mm": -25.21,
+        "conn_rod_rot_deg": 14.907,
+        "gear_G3_rot_deg": 240.0,
+        "gear_P1_rot_deg": -19200.0,
+        "figure_dx_mm": -51.889,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f17.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 30.4,
+      "pose": {
+        "theta_deg": 255,
+        "switch_on": true,
+        "carriage_x_mm": -20.982,
+        "conn_rod_rot_deg": 16.801,
+        "gear_G3_rot_deg": 255.0,
+        "gear_P1_rot_deg": -20400.0,
+        "figure_dx_mm": -47.661,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f18.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.5,
+      "pose": {
+        "theta_deg": 270,
+        "switch_on": true,
+        "carriage_x_mm": -14.983,
+        "conn_rod_rot_deg": 17.458,
+        "gear_G3_rot_deg": 270.0,
+        "gear_P1_rot_deg": -21600.0,
+        "figure_dx_mm": -41.661,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f19.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.7,
+      "pose": {
+        "theta_deg": 285,
+        "switch_on": true,
+        "carriage_x_mm": -7.524,
+        "conn_rod_rot_deg": 16.801,
+        "gear_G3_rot_deg": 285.0,
+        "gear_P1_rot_deg": -22800.0,
+        "figure_dx_mm": -34.203,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f20.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.9,
+      "pose": {
+        "theta_deg": 300,
+        "switch_on": true,
+        "carriage_x_mm": 0.79,
+        "conn_rod_rot_deg": 14.907,
+        "gear_G3_rot_deg": 300.0,
+        "gear_P1_rot_deg": -24000.0,
+        "figure_dx_mm": -25.889,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f21.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.7,
+      "pose": {
+        "theta_deg": 315,
+        "switch_on": true,
+        "carriage_x_mm": 9.153,
+        "conn_rod_rot_deg": 11.989,
+        "gear_G3_rot_deg": 315.0,
+        "gear_P1_rot_deg": -25200.0,
+        "figure_dx_mm": -17.526,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f22.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.6,
+      "pose": {
+        "theta_deg": 330,
+        "switch_on": true,
+        "carriage_x_mm": 16.714,
+        "conn_rod_rot_deg": 8.33,
+        "gear_G3_rot_deg": 330.0,
+        "gear_P1_rot_deg": -26400.0,
+        "figure_dx_mm": -9.965,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion/f23.jpg": {
+      "view": "motion",
+      "resolution": [
+        960,
+        540
+      ],
+      "samples": 32,
+      "seconds": 29.9,
+      "pose": {
+        "theta_deg": 345,
+        "switch_on": true,
+        "carriage_x_mm": 22.733,
+        "conn_rod_rot_deg": 4.236,
+        "gear_G3_rot_deg": 345.0,
+        "gear_P1_rot_deg": -27600.0,
+        "figure_dx_mm": -3.946,
+        "switch_knob_x_mm": 102.5
+      }
+    },
+    "motion_sheet.jpg": {
+      "resolution": [
+        1920,
+        720
+      ],
+      "grid": "6x4",
+      "frames": "f00..f23"
+    },
+    "motion.mp4": {
+      "resolution": [
+        960,
+        540
+      ],
+      "fps": 12,
+      "frames": 72,
+      "note": "24 motion frames looped 3x (one frame = 15 deg of crank)",
+      "bytes": 356157
+    },
+    "motion.webm": {
+      "resolution": [
+        960,
+        540
+      ],
+      "fps": 12,
+      "frames": 72,
+      "note": "24 motion frames looped 3x (one frame = 15 deg of crank)",
+      "bytes": 202707
+    }
+  },
+  "motion": {
+    "frames": 24,
+    "theta_step_deg": 15,
+    "fps": 12,
+    "carriage_x_range_mm_observed": [
+      -28.319,
+      28.279
+    ],
+    "mean_seconds_per_frame": 29.9
+  },
+  "kinematics": {
+    "carriage_x_full_stroke_mm": [
+      -28.322,
+      28.312
+    ],
+    "carriage_x_pose0_mm": 26.679
+  },
+  "rod_attachment_gap_mm": {
+    "theta_step_deg": 30,
+    "per_theta": {
+      "0": 0.00135,
+      "30": 0.00135,
+      "60": 0.00135,
+      "90": 0.00135,
+      "120": 0.00135,
+      "150": 0.00135,
+      "180": 0.00135,
+      "210": 0.00135,
+      "240": 0.00136,
+      "270": 0.00135,
+      "300": 0.00136,
+      "330": 0.00135
+    },
+    "max": 0.00136
+  }
+}
