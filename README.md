@@ -30,6 +30,18 @@ python3 -m http.server 8000      # 저장소 루트에서
 - 캐리지 행정 **56.6 mm** (x = −28.3 … +28.3), 크랭크 한 바퀴에 한 번 왕복. 한쪽이 눌리는 이유는 로드가 기울어 있기 때문입니다.
 - 3 V 모터 무부하 약 6000 rpm → 크랭크 약 75 rpm. 웹의 기본 속도는 기어 맞물림이 보이도록 12 rpm 입니다.
 
+## Blender 렌더
+
+`render/` 는 pip 설치형 bpy(5.x, Cycles CPU + OpenImageDenoise)로 같은 GLB를 불러와 `spec/kinematics.json` 포즈를 적용해 렌더합니다. 자세한 사용법과 시간은 `render/README.md`.
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install bpy numpy
+.venv/bin/python render/render_all.py stills     # hero, front, iso_off, detail_*
+.venv/bin/python render/render_all.py motion     # 24프레임 + mp4/webm (4코어 약 12분)
+```
+
+결과물은 `web/renders/` (히어로 약 2분, 모션 프레임당 약 30초). 투명 아크릴은 렌더 시간과 노이즈 때문에 Transparent+Glossy 혼합으로 근사했습니다.
+
 ## 조립 간섭 검사
 
 ```bash
