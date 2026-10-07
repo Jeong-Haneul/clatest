@@ -68,5 +68,5 @@ footer{max-width:1280px;margin:0 auto;padding:16px;color:var(--muted);font-size:
   .stage{grid-template-columns:1fr}
   .how-grid{grid-template-columns:1fr}
 }
-@media (max-width:560px){ .r-grid{grid-template-columns:1fr} .canvas-wrap{aspect-ratio:4/5} .hud{font-size:.72rem} }
+@media (max-width:560px){ .r-grid{grid-template-columns:1fr} .canvas-wrap{aspect-ratio:4/5} .hud{font-size:.7rem;gap:0 10px;padding:6px 9px} }
 @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }

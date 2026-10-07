@@ -66,8 +66,12 @@ let tween = null;
 function goView(name, instant = false) {
   const v = VIEWS[name];
   if (!v) return;
-  if (instant) { camera.position.set(...v.pos); controls.target.set(...v.tgt); controls.update(); return; }
-  tween = { t: 0, p0: camera.position.clone(), t0: controls.target.clone(), p1: new THREE.Vector3(...v.pos), t1: new THREE.Vector3(...v.tgt) };
+  // 세로 화면이면 가로폭이 모자라므로 카메라를 물린다
+  const k = camera.aspect < 1.4 ? Math.min(2.2, 1.4 / camera.aspect) : 1;
+  const tgt = new THREE.Vector3(...v.tgt);
+  const pos = new THREE.Vector3(...v.pos).sub(tgt).multiplyScalar(k).add(tgt);
+  if (instant) { camera.position.copy(pos); controls.target.copy(tgt); controls.update(); return; }
+  tween = { t: 0, p0: camera.position.clone(), t0: controls.target.clone(), p1: pos, t1: tgt };
 }
 document.querySelectorAll('.views button').forEach((b) => b.addEventListener('click', () => goView(b.dataset.view)));
 controls.addEventListener('start', () => { tween = null; });
