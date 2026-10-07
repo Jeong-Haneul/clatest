@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>좌우 이동 오토마타</title>
+<meta name="description" content="DC 모터 · 80:1 3단 기어 · 슬라이더-크랭크로 양철 로봇이 좌우로 구르는 오토마타. Blender로 모델링하고 three.js로 실시간 구동합니다.">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.js", "three/addons/": "./vendor/jsm/" } }
+</script>
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>좌우 이동 오토마타</h1>
+    <p class="sub">3 V 마이크로 모터 → 80:1 기어 → 슬라이더-크랭크 → 양철 로봇이 뚜껑 위를 좌우로</p>
+  </div>
+  <nav><a href="#viewer">구동</a><a href="#how">원리</a><a href="#renders">렌더</a><a href="#parts">부품</a></nav>
+</header>
+
+<main>
+<section id="viewer" class="stage">
+  <div class="canvas-wrap">
+    <canvas id="gl" aria-label="오토마타 3D 뷰어"></canvas>
+    <div id="loading" class="loading"><div class="bar"><i id="loadbar"></i></div><span id="loadtxt">부품 불러오는 중…</span></div>
+    <div class="hud" id="hud" aria-live="off">
+      <div><b>크랭크</b><span id="h-theta">0°</span></div>
+      <div><b>캐리지 x</b><span id="h-x">0.0 mm</span></div>
+      <div><b>크랭크 회전</b><span id="h-rpm">0 rpm</span></div>
+      <div><b>모터축</b><span id="h-motor">0 rpm</span></div>
+    </div>
+    <div class="views" role="group" aria-label="시점">
+      <button data-view="three">3/4</button><button data-view="front">정면</button>
+      <button data-view="top">위</button><button data-view="side">옆</button><button data-view="gears">기어열</button><button data-view="figure">로봇</button>
+    </div>
+  </div>
+
+  <aside class="panel">
+    <div class="power">
+      <button id="sw" class="switch" role="switch" aria-checked="false"><span class="knob"></span><span class="lbl">OFF</span></button>
+      <p class="hint">스위치를 켜면 LED가 들어오고 모터가 돕니다 (<kbd>Space</kbd>)</p>
+    </div>
+
+    <label class="row">크랭크 속도 <output id="o-speed">12 rpm</output>
+      <input id="speed" type="range" min="2" max="75" step="1" value="12">
+      <small>실제 3 V 모터 ≈ 75 rpm. 느리게 하면 기어 맞물림이 잘 보입니다.</small>
+    </label>
+    <label class="row">수동 각도 <output id="o-theta">0°</output>
+      <input id="theta" type="range" min="0" max="360" step="1" value="0">
+      <small>스위치가 꺼진 상태에서 손으로 돌려 봅니다.</small>
+    </label>
+    <label class="row">분해도 <output id="o-explode">0%</output>
+      <input id="explode" type="range" min="0" max="100" step="1" value="0">
+    </label>
+
+    <fieldset>
+      <legend>보이기</legend>
+      <label><input type="checkbox" data-part="housing" checked> 하우징</label>
+      <label><input type="checkbox" data-part="drive" checked> 모터 · 기어</label>
+      <label><input type="checkbox" data-part="slide" checked> 크랭크 · 슬라이드</label>
+      <label><input type="checkbox" data-part="electronics" checked> 전자부</label>
+      <label><input type="checkbox" data-part="figure" checked> 로봇</label>
+      <label><input type="checkbox" id="ghost"> 하우징 투명(내부 보기)</label>
+    </fieldset>
+    <p class="stat" id="stat"></p>
+  </aside>
+</section>
+
+<section id="how" class="how">
+  <h2>어떻게 움직이나</h2>
+  <div class="how-grid">
+    <ol class="steps">
+      <li><b>모터</b> 3 V 마이크로 DC 모터(약 6000 rpm)가 10T 피니언을 돌립니다.</li>
+      <li><b>3단 감속</b> 10→40T, 10→40T, 12→60T로 <b>4 × 4 × 5 = 80 : 1</b>. 크랭크는 약 75 rpm.</li>
+      <li><b>크랭크</b> 반지름 26 mm 핀이 원을 그립니다.</li>
+      <li><b>커넥팅 로드</b> 길이 100 mm 로드가 핀과 캐리지를 잇습니다.</li>
+      <li><b>캐리지</b> 이중 가이드 로드 위에서 좌우로만 미끄러집니다. 행정 <b id="stroke">56.6</b> mm.</li>
+      <li><b>로봇</b> 캐리지에 실려 뚜껑 슬롯을 따라 왕복하고, 바퀴는 굴러가며 안테나가 관성으로 흔들립니다.</li>
+    </ol>
+    <figure class="graph">
+      <canvas id="graph" width="640" height="360"></canvas>
+      <figcaption>크랭크 각도에 따른 캐리지 위치. 완전한 사인파가 아니라 로드가 기울어서 한쪽이 눌립니다.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="renders" class="renders">
+  <h2>Blender 렌더</h2>
+  <p class="muted">같은 GLB 부품을 Blender Cycles로 렌더한 결과입니다.</p>
+  <div class="r-grid" id="r-grid">
+    <figure class="wide"><img data-src="renders/hero.jpg" alt="히어로 렌더" loading="lazy"><figcaption>히어로 · 3/4 뷰</figcaption></figure>
+    <figure><img data-src="renders/front.jpg" alt="정면 렌더" loading="lazy"><figcaption>정면 · 아크릴 너머 기구</figcaption></figure>
+    <figure><img data-src="renders/detail_drive.jpg" alt="기어열 디테일" loading="lazy"><figcaption>기어열 디테일</figcaption></figure>
+    <figure><img data-src="renders/detail_figure.jpg" alt="로봇 디테일" loading="lazy"><figcaption>양철 로봇</figcaption></figure>
+    <figure><img data-src="renders/iso_off.jpg" alt="OFF 상태" loading="lazy"><figcaption>스위치 OFF</figcaption></figure>
+    <figure class="wide"><video id="motion" muted loop playsinline controls preload="none" poster="renders/motion_sheet.jpg"><source src="renders/motion.webm" type="video/webm"><source src="renders/motion.mp4" type="video/mp4"></video><figcaption>크랭크 한 바퀴 (24프레임)</figcaption></figure>
+  </div>
+</section>
+
+<section id="parts" class="parts">
+  <h2>부품과 모델</h2>
+  <table>
+    <thead><tr><th>모듈</th><th>GLB</th><th>구성</th></tr></thead>
+    <tbody>
+      <tr><td>구동부</td><td><a href="../assets/parts/drive.glb">drive.glb</a></td><td>마이크로 모터, 아크릴 섀시(앞·뒤판), 스탠드오프, 기어 6단(P1, G1·P2, G2·P3, G3)</td></tr>
+      <tr><td>슬라이드</td><td><a href="../assets/parts/slide.glb">slide.glb</a></td><td>크랭크 핀 어셈블리, 커넥팅 로드, 캐리지, 이중 가이드 로드</td></tr>
+      <tr><td>피규어</td><td><a href="../assets/parts/figure.glb">figure.glb</a></td><td>양철 로봇 몸통, 앞·뒤 바퀴, 안테나</td></tr>
+      <tr><td>전자부</td><td><a href="../assets/parts/electronics.glb">electronics.glb</a></td><td>2×AA 배터리 홀더, 슬라이드 스위치, LED + 저항, 배선, 클립</td></tr>
+      <tr><td>하우징</td><td><a href="../assets/parts/housing.glb">housing.glb</a></td><td>자작나무 바닥·벽·뚜껑, 투명 아크릴 앞판</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">모든 부품은 하나의 조립 좌표계(Z-up, mm)를 공유합니다. 노드 원점·감속비·기구학은 <a href="../spec/kinematics.json">spec/kinematics.json</a>에 있습니다.</p>
+</section>
+</main>
+<footer>Blender로 모델링 · glTF · three.js</footer>
+<script type="module" src="app.js"></script>
+</body>
+</html>

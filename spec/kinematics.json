@@ -1,0 +1,32 @@
+{
+  "_doc": "좌우 이동 오토마타 기구학 계약. 좌표: 조립체 Z-up, 단위 mm (GLB 파일 자체는 glTF Y-up, 미터). x=좌우(+가 오른쪽), y=깊이(-가 앞/관객쪽), z=위. '정면 CCW' = 앞(-y)에서 볼 때 반시계. GLB 노드의 translation/메시 정점은 모두 pose0(크랭크 θ=0, 스위치 OFF) 기준.",
+  "units": "mm",
+  "crank": { "center": [-91.82, 54.0], "radius": 26.0, "rod_length": 100.0, "carriage_pin_z": 92.0 },
+  "gears": {
+    "_doc": "rot[node] = ratio * theta (정면 CCW, rad). theta는 G3/크랭크 각도. 잇수 P1=10 G1=40 P2=10 G2=40 P3=12 G3=60 → 80:1",
+    "gear_P1":   { "glb": "drive",   "origin": [-14.37, -5.0, 27.84], "teeth": 10, "ratio": -80 },
+    "gear_G1P2": { "glb": "drive",   "origin": [-36.02, -8.0, 40.34], "teeth": 40, "ratio": 20 },
+    "gear_G2P3": { "glb": "drive",   "origin": [-60.64, -14.0, 36.0], "teeth": 40, "ratio": -5 },
+    "gear_G3":   { "glb": "drive",   "origin": [-91.82, -19.0, 54.0], "teeth": 60, "ratio": 1 },
+    "crank_pin_assy": { "glb": "slide", "origin": [-91.82, -24.5, 54.0], "ratio": 1 }
+  },
+  "rod":      { "node": "conn_rod", "glb": "slide", "origin_pose0": [-65.82, -29.5, 54.0], "note": "node 원점=크랭크 핀. 메시는 pose0 각도로 구워짐 → 회전은 phi(theta)-phi0 (정면 CCW), 위치=핀 위치" },
+  "carriage": { "node": "carriage", "glb": "slide", "origin_pose0": [26.68, -29.5, 92.0], "note": "원점=로드 끝 핀. x만 변함: x = pinx + sqrt(L^2-(zr-pinz)^2)" },
+  "figure": {
+    "glb": "figure",
+    "follow_carriage_dx": ["figure_body", "figure_wheel_front", "figure_wheel_back", "figure_antenna"],
+    "wheels": { "nodes": ["figure_wheel_front", "figure_wheel_back"], "radius": 7.0, "note": "굴림 회전(정면 CCW) = -dx / radius" },
+    "antenna": { "node": "figure_antenna", "origin": [26.68, -36.0, 164.2], "note": "관성 흔들림용 (렌더는 0, 웹은 스프링)" }
+  },
+  "electronics": {
+    "switch_knob": { "node": "switch_knob", "origin": [97.5, -10.0, 119.5], "travel_x_on": 5.0, "note": "OFF=pose0(왼쪽 끝), ON=+5mm" },
+    "led_lens":    { "node": "led_lens", "material": "led_lens", "off_color": [0.19, 0.01, 0.01], "on_emissive": [1.0, 0.08, 0.04] }
+  },
+  "assembly": {
+    "parts": ["housing", "drive", "slide", "electronics", "figure"],
+    "transparent_materials": ["acrylic_clear", "acrylic_smoke"],
+    "lid_top_z": 118.0, "front_panel_y": [-47.0, -43.0],
+    "bbox_mm": { "min": [-134.0, -47.0, -3.0], "max": [134.0, 42.0, 172.75] }
+  },
+  "motor": { "p1_rpm_nominal": 6000, "note": "3V 마이크로 DC 모터 무부하 6000rpm / 80 = 크랭크 75rpm. 연출용 기본 크랭크 속도는 웹 슬라이더로 조절" }
+}
